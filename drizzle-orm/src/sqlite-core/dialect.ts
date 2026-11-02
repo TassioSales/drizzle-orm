@@ -208,7 +208,12 @@ export abstract class SQLiteDialect {
 					chunk.push(sql` as ${sql.identifier(field.fieldAlias)}`);
 				}
 			} else if (is(field, Column)) {
-				const tableName = field.table[Table.Symbol.Name];
+				const customSelect = field.selectFromDb;
+				if (customSelect) {
+					const colSql = isSingleTable ? sql.identifier(this.casing.getColumnCasing(field)) : field;
+					chunk.push(sql`${customSelect(colSql)} as ${sql.identifier(this.casing.getColumnCasing(field))}`);
+				} else {
+					const tableName = field.table[Table.Symbol.Name];
 				if (field.columnType === 'SQLiteNumericBigInt') {
 					if (isSingleTable) {
 						chunk.push(
@@ -227,6 +232,7 @@ export abstract class SQLiteDialect {
 							sql`${sql.identifier(tableName)}.${sql.identifier(this.casing.getColumnCasing(field))}`,
 						);
 					}
+				}
 				}
 			} else if (is(field, Subquery)) {
 				const entries = Object.entries(field._.selectedFields) as [

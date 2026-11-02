@@ -244,7 +244,11 @@ export class SingleStoreDialect {
 					chunk.push(sql` as ${sql.identifier(field.fieldAlias)}`);
 				}
 			} else if (is(field, Column)) {
-				if (isSingleTable) {
+				const customSelect = field.selectFromDb;
+				if (customSelect) {
+					const colSql = isSingleTable ? sql.identifier(this.casing.getColumnCasing(field)) : field;
+					chunk.push(sql`${customSelect(colSql)} as ${sql.identifier(this.casing.getColumnCasing(field))}`);
+				} else if (isSingleTable) {
 					chunk.push(sql.identifier(this.casing.getColumnCasing(field)));
 				} else {
 					chunk.push(field);
