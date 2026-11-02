@@ -267,9 +267,6 @@ importers:
       env-paths:
         specifier: ^3.0.0
         version: 3.0.0
-      esbuild:
-        specifier: ^0.25.10
-        version: 0.25.12
       get-port:
         specifier: ^6.1.2
         version: 6.1.2
@@ -974,6 +971,7 @@ importers:
       wrangler:
         specifier: ^3.90.0
         version: 3.114.17(@cloudflare/workers-types@4.20251126.0)(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+
   test-utils:
     devDependencies:
       '@types/node':
